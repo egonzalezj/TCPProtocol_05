@@ -25,7 +25,7 @@ namespace TCP_Server
             {
                 //Set the TCPListener on port 4444
                 const int port = 4444;
-                IPAddress ip = new IPAddress(new byte[] { 10, 6, 2, 7 });
+                IPAddress ip = new IPAddress(new byte[] { 192, 168, 1, 103 });
                 server = new TcpListener(ip, port);
                 //Start listening for client requests
                 server.Start();
