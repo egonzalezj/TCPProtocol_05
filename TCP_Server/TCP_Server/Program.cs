@@ -29,10 +29,14 @@ namespace TCP_Server
             try
             {
                 Console.WriteLine("Esperando conexión...");
+                //Asociates a Socket object with a local endpoint
                 sserver.Bind(ep);
+                //Places a Socket object in a listening state
                 sserver.Listen(5);
+                //Esablishes a connection to a remote host
                 sserver.Accept();
-                Console.WriteLine("Conectado con el servidor.");
+                //sserver.Connect(ep);
+                Console.WriteLine("Conectado a: " + IPAddress.Parse(((IPEndPoint)sserver.LocalEndPoint).Address.ToString()) + ":" + ((IPEndPoint)sserver.LocalEndPoint).Port.ToString());
             }
             catch
             {

@@ -24,7 +24,7 @@ namespace TCP_Client
             //Socket server port
             const int client_port = 4444;
             //IP address
-            IPAddress client_ip = new IPAddress(new byte[] { 127, 0, 0, 1 });
+            IPAddress client_ip = new IPAddress(new byte[] { 10, 6, 2, 7 });
             //Init a new instance for IPEndPoint class
             IPEndPoint ep = new IPEndPoint(client_ip, client_port);
 
