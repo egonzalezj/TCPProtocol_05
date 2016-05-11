@@ -6,7 +6,8 @@
  * Version: 1.0.
  * 
  * History:
- * 
+ * v1.0 10/05/2016  Sockets connection.
+ * v1.1 11/05/2016  Socket objects deleted,TCPListener used instead.
  */
 
 using System;
@@ -17,34 +18,42 @@ namespace TCP_Server
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            //Create socket to send data over TCP
-            Socket sserver = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            //Socket server port
-            const int server_port = 4444;
-            //Init a new instance for IPEndPoint class
-            IPEndPoint ep = new IPEndPoint(IPAddress.Any, server_port);
-
+            TcpListener server = null;
             try
             {
-                Console.WriteLine("Esperando conexión...");
-                //Asociates a Socket object with a local endpoint
-                sserver.Bind(ep);
-                //Places a Socket object in a listening state
-                sserver.Listen(5);
-                //Esablishes a connection to a remote host
-                sserver.Accept();
-                //sserver.Connect(ep);
-                Console.WriteLine("Conectado a: " + IPAddress.Parse(((IPEndPoint)sserver.LocalEndPoint).Address.ToString()) + ":" + ((IPEndPoint)sserver.LocalEndPoint).Port.ToString());
+                //Set the TCPListener on port 4444
+                const int port = 4444;
+                IPAddress ip = new IPAddress(new byte[] { 10, 6, 2, 7 });
+                server = new TcpListener(ip, port);
+                //Start listening for client requests
+                server.Start();
+                //int numberOfConnection = 0;
+                //Listening loop
+                while (true)
+                {
+                    Console.WriteLine("Esperando conexión...");
+                    Socket socket = server.AcceptSocket();
+                    //++numberOfConnection;
+                    IPAddress clientIP = IPAddress.Parse(((IPEndPoint)socket.RemoteEndPoint).Address.ToString());
+                    string clientPort = ((IPEndPoint)socket.RemoteEndPoint).Port.ToString();
+                    Console.WriteLine(clientIP + ":" + clientPort + " conectado!");
+                    socket.Close();
+                }
             }
-            catch
+            catch(SocketException e)
             {
-                Console.WriteLine("Error de conexión.");
+                Console.WriteLine("SocketException: {0}", e);
+                
+            }
+            finally
+            {
+                //Stop listening for new clients
+                server.Stop();
             }
 
             Console.ReadKey();
-            sserver.Close();
         }
     }
 }
