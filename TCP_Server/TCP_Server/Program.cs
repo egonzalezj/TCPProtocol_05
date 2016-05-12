@@ -6,8 +6,9 @@
  * Version: 1.0.
  * 
  * History:
- * v1.0 10/05/2016  Sockets connection.
- * v1.1 11/05/2016  Socket objects deleted,TCPListener used instead.
+ * v1.0     10/05/2016  Sockets connection.
+ * v1.1     11/05/2016  Socket objects deleted,TCPListener used instead.
+ * v1.2     11/05/2016  SocketException added.
  */
 
 using System;
@@ -25,17 +26,15 @@ namespace TCP_Server
             {
                 //Set the TCPListener on port 4444
                 const int port = 4444;
-                IPAddress ip = new IPAddress(new byte[] { 192, 168, 1, 103 });
+                IPAddress ip = new IPAddress(new byte[] { 10, 6, 2, 7 });
                 server = new TcpListener(ip, port);
                 //Start listening for client requests
                 server.Start();
-                //int numberOfConnection = 0;
+                Console.WriteLine("Esperando conexión...");
                 //Listening loop
                 while (true)
                 {
-                    Console.WriteLine("Esperando conexión...");
                     Socket socket = server.AcceptSocket();
-                    //++numberOfConnection;
                     IPAddress clientIP = IPAddress.Parse(((IPEndPoint)socket.RemoteEndPoint).Address.ToString());
                     string clientPort = ((IPEndPoint)socket.RemoteEndPoint).Port.ToString();
                     Console.WriteLine(clientIP + ":" + clientPort + " conectado!");

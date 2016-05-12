@@ -6,7 +6,8 @@
  * Version: 1.0.
  * 
  * History:
- * 
+ * v1.0     10/05/2016  Sockets connection.
+ * v1.1     11/05/2016  SocketException added.
  */
 
 using System;
@@ -20,26 +21,26 @@ namespace TCP_Client
         static void Main(string[] args)
         {
             //Create socket to send data over TCP
-            Socket sclient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            //Socket server port
-            const int client_port = 4444;
+            Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            //Socket client port
+            const int port = 4444;
             //IP address
-            IPAddress client_ip = new IPAddress(new byte[] { 10, 6, 2, 7 });
+            IPAddress ip = new IPAddress(new byte[] { 10, 6, 2, 7 });
             //Init a new instance for IPEndPoint class
-            IPEndPoint ep = new IPEndPoint(client_ip, client_port);
+            IPEndPoint ep = new IPEndPoint(ip, port);
 
             try
             {
-                sclient.Connect(ep);
+                client.Connect(ep);
                 Console.WriteLine("Conectado.");
             }
-            catch
+            catch(SocketException e)
             {
-                Console.WriteLine("Error de conexión.");
+                Console.WriteLine("SocketException: {0}", e);
             }
 
             Console.ReadKey();
-            sclient.Close();
+            client.Close();
         }
     }
 }
